@@ -1,4 +1,7 @@
-
+.modified
 {
     color: red !important;
 }
+p
+{display: inline
+};
