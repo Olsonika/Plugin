@@ -1,7 +1,15 @@
 .modified
 {
-    color: red !important;
+    color: red ; 
 }
-p
+
+a.modified {
+    box-shadow: none !important;
+}
+
+a.modified:hover {
+    color:red !important;
+}
+/** p
 {display: inline
 };
