@@ -5,14 +5,16 @@
  * Author: Aleksandra Maryla Kurdelska
  */
 
+defined( 'ABSPATH') or die ();
+
  add_filter ('the_content', array('filterhook_badwords_wordpress','fix_spelling'));
  add_action( 'wp_enqueue_scripts', array('filterhook_badwords_wordpress', 'includes'));
 
 class filterhook_badwords_wordpress{
     function fix_spelling($content) 
     {
-        $search  = array( 'fuck', 'fucking', 'shit', 'motherfucker', 'cunt', 'bitch' );
-        $replace = array( 'fork', 'forking', 'shirt', 'mothertrucker', 'calm', 'bench' );
+        $search  = array( 'fuck', 'fucking', 'fuck you', 'shit', 'motherfucker', 'cunt', 'bitch', 'asshole', 'dick', 'son of a bitch', 'bastard', 'twat', 'damn', 'crap' );
+        $replace = array( 'fork', 'forking', 'fork you', 'shirt', 'mothertrucker', 'calm', 'bench', 'armhole', 'duck', 'son of a bench', 'backflash', 'tweet', 'darling', 'carb' );
         return str_replace( $search, $replace, $content );
     }
 
