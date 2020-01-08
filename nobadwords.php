@@ -8,14 +8,32 @@
 
 defined( 'ABSPATH') or die ('Go away!');
 
- add_filter ('the_content', array('filterhook_badwords_wordpress','fix_spelling'));
- add_action( 'wp_enqueue_scripts', array('filterhook_badwords_wordpress', 'includes'));
+add_filter ('the_content', array('filterhook_badwords_wordpress','fix_spelling'));
+add_action( 'wp_enqueue_scripts', array('filterhook_badwords_wordpress', 'includes'));
 
 class filterhook_badwords_wordpress{
+    
     function fix_spelling($content) 
     {
-        $search  = array( 'ass','fuck', 'shit', 'motherfucker', 'cunt', 'bitch', 'asshole', 'dick', 'dickhead', 'son of a bitch', 'bastard', 'twat', 'damn', 'crap', 'nigga', 'whore', 'slut', 'prick',);
-        $replace = array( 
+        //DB con
+        $conn = mysqli_connect('localhost', 'root', '2001', 'nobadwords');
+    
+        // Check conn
+        if (!$conn) {
+        echo 'Connection error: ' . mysqli_connect_error();
+        };  
+
+        $sql = 'SELECT badword, goodword FROM words';
+        $result = mysqli_query($conn, $sql);
+        $row = $result -> fetch_array(MYSQLI_ASSOC);
+
+        $search  = $row['badword'];
+
+        /**array( 'ass','fuck', 'shit', 'motherfucker', 'cunt', 'bitch', 'asshole', 'dick', 'dickhead', 'son of a bitch', 'bastard', 'twat', 'damn', 'crap', 'nigga', 'whore', 'slut', 'prick',); **/
+
+        $replace = $row['goodword'];
+        
+        /**array( 
             "<a class='modified'>" . 'abs' . "</a>",
             "<a class='modified'>" . 'fork' . "</a>",
             "<a class='modified'>" . 'shirt' . "</a>",
@@ -35,20 +53,15 @@ class filterhook_badwords_wordpress{
             "<a class='modified'>" . 'flute' . "</a>",
             "<a class='modified'>" . 'prank' . "</a>",
             
-        );
+        ); **/
 
+       
+            return str_replace( $search, $replace, $content);
+       
 
-        return str_replace( $search, $replace, $content );
-    }
-
-   
     function includes ()
     {
         wp_enqueue_style ("style", plugins_url() . "/alexplug/style.css");
     }
-};
-
-        //1) explode string with " ", will give you array
-        //2) loop through each word in new array based on $content
-        //3) --loop through each word in search
-        //4) ----if we find a matching word with $search -> replace with $replace
+}
+}

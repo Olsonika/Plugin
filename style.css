@@ -10,6 +10,6 @@ a.modified {
 a.modified:hover {
     color:red !important;
 }
-/** p
-{display: inline
-};
+/** p {
+    display: inline
+}
