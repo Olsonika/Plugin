@@ -21,17 +21,34 @@ class filterhook_badwords_wordpress{
         // Check conn
         if (!$conn) {
         echo 'Connection error: ' . mysqli_connect_error();
-        };  
+        }
 
+        // Select the data + send query
         $sql = 'SELECT badword, goodword FROM words';
         $result = mysqli_query($conn, $sql);
-        $row = $result -> fetch_array(MYSQLI_ASSOC);
+       
 
-        $search  = $row['badword'];
+        // Go thru the database
+        while ( $row = $result->fetch_assoc())
+        {
+            $search[]  = $row['badword'];
+            $replace[] = $row['goodword'];
+        }
+      
+        //Return
+        return str_replace( $search, $replace, $content);
+            
 
-        /**array( 'ass','fuck', 'shit', 'motherfucker', 'cunt', 'bitch', 'asshole', 'dick', 'dickhead', 'son of a bitch', 'bastard', 'twat', 'damn', 'crap', 'nigga', 'whore', 'slut', 'prick',); **/
+    }
+}
+    /**function includes ()
+    {
+        wp_enqueue_style ("style", plugins_url() . "/alexplug/style.css");
+    }
+}
+}
 
-        $replace = $row['goodword'];
+    /**array( 'ass','fuck', 'shit', 'motherfucker', 'cunt', 'bitch', 'asshole', 'dick', 'dickhead', 'son of a bitch', 'bastard', 'twat', 'damn', 'crap', 'nigga', 'whore', 'slut', 'prick',); **/
         
         /**array( 
             "<a class='modified'>" . 'abs' . "</a>",
@@ -54,14 +71,3 @@ class filterhook_badwords_wordpress{
             "<a class='modified'>" . 'prank' . "</a>",
             
         ); **/
-
-       
-            return str_replace( $search, $replace, $content);
-       
-
-    function includes ()
-    {
-        wp_enqueue_style ("style", plugins_url() . "/alexplug/style.css");
-    }
-}
-}
